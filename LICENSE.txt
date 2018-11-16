@@ -1,4 +1,4 @@
-SDL2 imported targets wrapper.
+CMake wrapper for SDL2 module.
 
 
 Copyright (c) 2018 Boris I. Bendovsky (bibendovsky@hotmail.com) and Contributors.

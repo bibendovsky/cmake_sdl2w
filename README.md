@@ -1,1 +1,1 @@
-CMake find module wrapper for SDL2.
+CMake wrapper for SDL2 module.

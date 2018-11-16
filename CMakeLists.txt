@@ -1,6 +1,6 @@
 #[[
 
-CMake find module wrapper for SDL2.
+CMake wrapper for SDL2 module.
 Test program.
 
 
@@ -28,7 +28,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 cmake_minimum_required(VERSION 3.1.3 FATAL_ERROR)
-project(test_cmake_sdl2w VERSION 1.0.0 LANGUAGES C)
+project(test_cmake_sdl2w VERSION 1.0.1 LANGUAGES C)
 
 # Options.
 #

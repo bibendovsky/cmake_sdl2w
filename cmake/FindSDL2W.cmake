@@ -27,9 +27,9 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 Virtual components:
     - static - uses static version of SDL2.
 
-Required variables (mutual exclusive):
-    - SDL2_DIR - directory with SDL2 CMake configuration files.
-    - SDL2W_SDL2_DIR - directory with official SDL2 development build (Windows only).
+Required variables:
+    - SDL2W_SDL2_DIR - the directory with SDL2 CMake configuration files or
+                       the directory with official SDL2 development Windows build.
 
 Targets:
     - SDL2W
@@ -39,20 +39,19 @@ Targets:
 
 cmake_minimum_required(VERSION 3.1.3 FATAL_ERROR)
 
-find_package(SDL2 QUIET)
+set(SDL2W_SDL2_DIR "" CACHE PATH "The directory with CMake configuration files or the directory with official SDL2 development Windows build. Leave empty to figure out the location of SDL2.")
 
-if (WIN32 AND NOT MINGW)
-	set(SDL2W_SDL2_DIR "SDL2W_SDL2_DIR-NOTFOUND" CACHE PATH "Directory with official SDL2 development build. Use only if SDL2's CMake configuration files are not available.")
-endif ()
+set(SDL2_DIR "" CACHE PATH "The directory containing a CMake configuration file for SDL2." FORCE)
+
+find_package(SDL2 QUIET HINTS ${SDL2W_SDL2_DIR})
 
 unset(SDL2W_TMP_USE_STATIC)
 set(SDL2W_TMP_VERSION_STRING "")
 
 unset(SDL2W_TMP_NO_CMAKE_CONFIG)
 
-if (WIN32 AND NOT MINGW AND NOT SDL2_FOUND AND SDL2W_SDL2_DIR)
+if (NOT SDL2_FOUND AND SDL2W_SDL2_DIR)
 	unset(SDL2W_TMP_ARCH_NAME)
-
 	if (CMAKE_SIZEOF_VOID_P EQUAL 8)
 		set(SDL2W_TMP_ARCH_NAME x64)
 	elseif (CMAKE_SIZEOF_VOID_P EQUAL 4)

@@ -33,7 +33,7 @@ Required variables:
                        Leave empty to search automatically.
 
 Targets:
-    - SDL2W
+    - SDL2W::SDL2W
 
 ]]
 
@@ -269,6 +269,7 @@ if (SDL2_FOUND OR SDL2W_TMP_FOUND_VC_DEV)
 	#
 	if (NOT TARGET ${CMAKE_FIND_PACKAGE_NAME})
 		add_library(${CMAKE_FIND_PACKAGE_NAME} INTERFACE)
+		add_library(${CMAKE_FIND_PACKAGE_NAME}::${CMAKE_FIND_PACKAGE_NAME} ALIAS ${CMAKE_FIND_PACKAGE_NAME})
 
 		if (NOT SDL2W_TMP_FOUND_TARGETS)
 			target_include_directories(

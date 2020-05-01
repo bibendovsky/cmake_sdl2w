@@ -4,7 +4,7 @@ CMake wrapper for SDL2 module.
 Test program.
 
 
-Copyright (c) 2018 Boris I. Bendovsky (bibendovsky@hotmail.com) and Contributors.
+Copyright (c) 2018-2020 Boris I. Bendovsky (bibendovsky@hotmail.com) and Contributors.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -89,6 +89,7 @@ endif ()
 target_link_libraries(
 	${PROJECT_NAME}
 	PRIVATE
+		SDL2W::SDL2Wmain
 		SDL2W::SDL2W
 )
 

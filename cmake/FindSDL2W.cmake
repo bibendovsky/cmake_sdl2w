@@ -33,14 +33,15 @@ Required variables:
                        Leave empty to search automatically.
 
 Targets:
-    - SDL2W::SDL2W
+    - SDL2W::SDL2Wmain - replacement for `main` entry point.
+    - SDL2W::SDL2W - SDL2.
 
 ]]
 
 
 cmake_minimum_required (VERSION 3.1.3 FATAL_ERROR)
 
-set (SDL2W_VERSION "1.0.0")
+set (SDL2W_VERSION "1.0.1")
 message (STATUS "[SDL2W] Version: ${SDL2W_VERSION}")
 
 set (SDL2W_SDL2_DIR "" CACHE PATH "The directory with CMake configuration files or the directory with official SDL2 development Windows build. Leave empty to figure out the location of SDL2.")
@@ -51,6 +52,9 @@ find_package (SDL2 QUIET HINTS ${SDL2W_SDL2_DIR})
 
 set (SDL2W_TMP_FOUND_CONFIG FALSE)
 set (SDL2W_TMP_FOUND_TARGETS FALSE)
+set (SDL2W_TMP_FOUND_STATIC_TARGET FALSE)
+set (SDL2W_TMP_TARGET "${CMAKE_FIND_PACKAGE_NAME}::${CMAKE_FIND_PACKAGE_NAME}")
+set (SDL2W_TMP_TARGET_MAIN "${SDL2W_TMP_TARGET}main")
 
 if (SDL2_FOUND)
 	message (STATUS "[SDL2W] Found config.")
@@ -61,6 +65,10 @@ if (SDL2_FOUND)
 		message (STATUS "[SDL2W] Found targets.")
 
 		set (SDL2W_TMP_FOUND_TARGETS TRUE)
+
+		if (TARGET SDL2::SDL2-static)
+			set (SDL2W_TMP_FOUND_STATIC_TARGET TRUE)
+		endif ()
 	elseif (SDL2_INCLUDE_DIRS AND SDL2_LIBRARIES)
 		message (STATUS "[SDL2W] Found config variables.")
 	else ()
@@ -132,20 +140,12 @@ if (SDL2_FOUND OR SDL2W_TMP_FOUND_MSVC_DEV)
 		#
 		set (SDL2W_TMP_SDL2_LOCATION "")
 
-		if (WIN32 AND NOT MINGW)
-			if (SDL2W_TMP_USE_STATIC)
-				get_target_property (
-					SDL2W_TMP_SDL2_LOCATION
-					SDL2::SDL2-static
-					LOCATION
-				)
-			else ()
-				get_target_property (
-					SDL2W_TMP_SDL2_LOCATION
-					SDL2::SDL2
-					LOCATION
-				)
-			endif ()
+		if (SDL2W_TMP_USE_STATIC AND SDL2W_TMP_FOUND_STATIC_TARGET)
+			get_target_property (
+				SDL2W_TMP_SDL2_LOCATION
+				SDL2::SDL2-static
+				LOCATION
+			)
 		else ()
 			get_target_property (
 				SDL2W_TMP_SDL2_LOCATION
@@ -177,20 +177,12 @@ if (SDL2_FOUND OR SDL2W_TMP_FOUND_MSVC_DEV)
 	# Get include directories.
 	#
 	if (SDL2W_TMP_FOUND_TARGETS)
-		if (WIN32 AND NOT MINGW)
-			if (SDL2W_TMP_USE_STATIC)
-				get_target_property (
-					SDL2W_TMP_INCLUDE_DIRS
-					SDL2::SDL2-static
-					INTERFACE_INCLUDE_DIRECTORIES
-				)
-			else ()
-				get_target_property (
-					SDL2W_TMP_INCLUDE_DIRS
-					SDL2::SDL2
-					INTERFACE_INCLUDE_DIRECTORIES
-				)
-			endif ()
+		if (SDL2W_TMP_USE_STATIC AND SDL2W_TMP_FOUND_STATIC_TARGET)
+			get_target_property (
+				SDL2W_TMP_INCLUDE_DIRS
+				SDL2::SDL2-static
+				INTERFACE_INCLUDE_DIRECTORIES
+			)
 		else ()
 			get_target_property (
 				SDL2W_TMP_INCLUDE_DIRS
@@ -345,56 +337,95 @@ if (SDL2_FOUND OR SDL2W_TMP_FOUND_MSVC_DEV)
 
 	# Add target.
 	#
-	if (NOT TARGET ${CMAKE_FIND_PACKAGE_NAME})
-		add_library (${CMAKE_FIND_PACKAGE_NAME} INTERFACE)
-		add_library (${CMAKE_FIND_PACKAGE_NAME}::${CMAKE_FIND_PACKAGE_NAME} ALIAS ${CMAKE_FIND_PACKAGE_NAME})
-
-		if (NOT SDL2W_TMP_FOUND_TARGETS)
-			target_include_directories(
-				${CMAKE_FIND_PACKAGE_NAME}
-				INTERFACE
-					${SDL2_INCLUDE_DIRS}
-			)
-		endif ()
-
+	if (NOT TARGET ${SDL2W_TMP_TARGET})
 		if (SDL2W_TMP_FOUND_TARGETS)
-			target_link_libraries (
-				${CMAKE_FIND_PACKAGE_NAME}
-				INTERFACE
-					SDL2::SDL2main
-			)
+			add_library (${SDL2W_TMP_TARGET} INTERFACE IMPORTED)
 
-			if (SDL2W_TMP_USE_STATIC)
-				if (WIN32 AND NOT MINGW)
-					target_link_libraries (
-						${CMAKE_FIND_PACKAGE_NAME}
-						INTERFACE
-							SDL2::SDL2-static
-					)
-				endif ()
+			if (SDL2W_TMP_USE_STATIC AND SDL2W_TMP_FOUND_STATIC_TARGET)
+				target_link_libraries (
+					${SDL2W_TMP_TARGET}
+					INTERFACE
+						SDL2::SDL2-static
+				)
 			else ()
 				target_link_libraries (
-					${CMAKE_FIND_PACKAGE_NAME}
+					${SDL2W_TMP_TARGET}
 					INTERFACE
 						SDL2::SDL2
 				)
 			endif ()
 		else ()
-			target_link_libraries (
-				${CMAKE_FIND_PACKAGE_NAME}
-				INTERFACE
-					${SDL2_LIBRARIES}
+			add_library (${SDL2W_TMP_TARGET} STATIC IMPORTED)
+
+			set_target_properties (
+				${SDL2W_TMP_TARGET}
+				PROPERTIES
+					INTERFACE_INCLUDE_DIRECTORIES ${SDL2_INCLUDE_DIRS}
+			)
+
+			set_target_properties (
+				${SDL2W_TMP_TARGET}
+				PROPERTIES
+					IMPORTED_LOCATION ${SDL2_LIBRARIES}
 			)
 		endif ()
 
 		if (WIN32 AND SDL2W_TMP_USE_STATIC)
 			target_link_libraries (
-				${CMAKE_FIND_PACKAGE_NAME}
+				${SDL2W_TMP_TARGET}
 				INTERFACE
 					imm32
 					setupapi
 					version
 					winmm
+			)
+		endif ()
+	endif ()
+
+	# Add main target.
+	#
+	if (NOT TARGET ${SDL2W_TMP_TARGET_MAIN})
+		if (SDL2W_TMP_FOUND_TARGETS)
+			add_library (${SDL2W_TMP_TARGET_MAIN} INTERFACE IMPORTED)
+
+			if (MINGW)
+				# Resolve undefined reference to WinMain.
+				#
+				target_link_libraries (
+					${SDL2W_TMP_TARGET_MAIN}
+					INTERFACE
+						-lmingw32
+				)
+			endif ()
+
+			target_link_libraries (
+				${SDL2W_TMP_TARGET_MAIN}
+				INTERFACE
+					SDL2::SDL2main
+			)
+		else ()
+			add_library (${SDL2W_TMP_TARGET_MAIN} STATIC IMPORTED)
+
+			if (MINGW)
+				# Resolve undefined reference to WinMain.
+				#
+				set_target_properties (
+					${SDL2W_TMP_TARGET_MAIN}
+					PROPERTIES
+						IMPORTED_LINK_INTERFACE_LIBRARIES -lmingw32
+				)
+			endif ()
+
+			set_target_properties (
+				${SDL2W_TMP_TARGET_MAIN}
+				PROPERTIES
+					INTERFACE_INCLUDE_DIRECTORIES ${SDL2_INCLUDE_DIRS}
+			)
+
+			set_target_properties (
+				${SDL2W_TMP_TARGET_MAIN}
+				PROPERTIES
+					IMPORTED_LOCATION ${SDL2_LIBRARIES}
 			)
 		endif ()
 	endif ()

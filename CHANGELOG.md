@@ -1,6 +1,11 @@
 # SDL2W changelog
 
 
+## [1.0.2] - 2020-05-02
+### Fixed
+- Official SDL2 MSVC build.
+
+
 ## [1.0.1] - 2020-05-01
 ### Added
 - The changelog.

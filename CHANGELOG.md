@@ -1,6 +1,11 @@
 # SDL2W changelog
 
 
+## [1.0.4] - 2020-08-11
+### Added
+- Support for SDL2_net.
+
+
 ## [1.0.3] - 2020-05-03
 ### Added
 - Support for MinGW development libraries.

@@ -1,10 +1,10 @@
 #[[
 
-CMake wrapper for SDL2 / SDL2_net module.
+SDL2W - CMake wrapper for SDL2.
 Test program.
 
 
-Copyright (c) 2018-2020 Boris I. Bendovsky (bibendovsky@hotmail.com) and Contributors.
+Copyright (c) 2018-2021 Boris I. Bendovsky (bibendovsky@hotmail.com) and Contributors.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@ OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 cmake_minimum_required(VERSION 3.1.3 FATAL_ERROR)
-project(test_cmake_sdl2w VERSION 1.0.4 LANGUAGES C)
+project(test_cmake_sdl2w VERSION 1.0.5 LANGUAGES C)
 
 # Options.
 #

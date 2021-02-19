@@ -1,6 +1,14 @@
 # SDL2W changelog
 
 
+## [1.0.5] - 2021-02-19
+### Fixed
+- [MinGW] Empty version string in non-MSYS builds.
+
+### Changed
+- Copyright years.
+
+
 ## [1.0.4] - 2020-08-11
 ### Added
 - Support for SDL2_net.

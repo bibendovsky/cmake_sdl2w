@@ -1,9 +1,8 @@
 #[[
 
-CMake wrapper for SDL2_net module.
+SDL2W - CMake wrapper for SDL2.
 
-
-Copyright (c) 2020 Boris I. Bendovsky (bibendovsky@hotmail.com) and Contributors.
+Copyright (c) 2020-2021 Boris I. Bendovsky (bibendovsky@hotmail.com) and Contributors.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +39,7 @@ Targets:
 
 cmake_minimum_required (VERSION 3.1.3 FATAL_ERROR)
 
-set (SDL2W_NET_VERSION "1.0.0")
+set (SDL2W_NET_VERSION "1.0.1")
 message (STATUS "[SDL2W_net] Version: ${SDL2W_NET_VERSION}")
 
 set (SDL2W_NET_TMP_TARGET "${CMAKE_FIND_PACKAGE_NAME}::${CMAKE_FIND_PACKAGE_NAME}")
@@ -234,16 +233,22 @@ endforeach ()
 foreach (SDL2W_NET_TMP_INCLUDE_DIR IN LISTS SDL2W_NET_TMP_SDL2_INC_DIRS)
 	set (SDL2W_NET_TMP_SDL_NET_H ${SDL2W_NET_TMP_INCLUDE_DIR}/SDL_net.h)
 
-	# Convert POSIX path to Windows one (MinGW)
+	# [MSYS2] Convert POSIX path to Windows one.
 	#
 	if (MINGW)
+		unset (SDL2W_NET_TMP_SDL_NET_H_MSYS2)
+
 		execute_process (
 			COMMAND "sh" "-c" "cmd //c echo ${SDL2W_NET_TMP_SDL_NET_H}"
 			TIMEOUT 7
-			OUTPUT_VARIABLE SDL2W_NET_TMP_SDL_NET_H
+			OUTPUT_VARIABLE SDL2W_NET_TMP_SDL_NET_H_MSYS2
 			ERROR_QUIET
 			OUTPUT_STRIP_TRAILING_WHITESPACE
 		)
+
+		if (SDL2W_NET_TMP_SDL_NET_H_MSYS2 MATCHES "SDL_net\\.h$")
+			set (SDL2W_NET_TMP_SDL_NET_H ${SDL2W_NET_TMP_SDL_NET_H_MSYS2})
+		endif ()
 	endif ()
 
 	# Extract version.
@@ -332,7 +337,11 @@ foreach (SDL2W_NET_TMP_INCLUDE_DIR IN LISTS SDL2W_NET_TMP_SDL2_INC_DIRS)
 	endif ()
 endforeach ()
 
-message (STATUS "[SDL2W_net] Found SDL2_net version: ${SDL2W_NET_TMP_VERSION_STRING}")
+if (SDL2W_NET_TMP_VERSION_STRING)
+	message (STATUS "[SDL2W_net] Found SDL2_net version: ${SDL2W_NET_TMP_VERSION_STRING}")
+else ()
+	message (FATAL_ERROR "[SDL2W_net] Failed to detect SDL2_net version.")
+endif ()
 
 
 # Default handler.

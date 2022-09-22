@@ -354,7 +354,7 @@ find_package_handle_standard_args(
 		SDL2W_NET_TMP_VERSION_STRING
 )
 
-if (WSDL2W_TMP_USE_STATIC)
+if (SDL2W_TMP_USE_STATIC)
 	list(APPEND SDL2W_TMP_SDL2_LINK_LIBS "${CMAKE_DL_LIBS}")
 endif ()
 

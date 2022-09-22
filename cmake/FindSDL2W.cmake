@@ -441,6 +441,10 @@ find_package_handle_standard_args (
 
 # Add additional system libraries for static linking.
 #
+if (WSDL2W_TMP_USE_STATIC)
+	list (APPEND SDL2W_TMP_SDL2_LINK_LIBS "${CMAKE_DL_LIBS}")
+endif ()
+
 if (WIN32 AND SDL2W_TMP_USE_STATIC)
 	list (APPEND SDL2W_TMP_SDL2_LINK_LIBS "imm32")
 	list (APPEND SDL2W_TMP_SDL2_LINK_LIBS "setupapi")

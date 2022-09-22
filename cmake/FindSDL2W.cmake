@@ -1,7 +1,7 @@
 #[[
 SDL2W - CMake wrapper for SDL2.
 
-Copyright (c) 2018-2021 Boris I. Bendovsky (bibendovsky@hotmail.com) and Contributors.
+Copyright (c) 2018-2022 Boris I. Bendovsky (bibendovsky@hotmail.com) and Contributors.
 SPDX-License-Identifier: MIT
 
 

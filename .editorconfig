@@ -1,0 +1,11 @@
+root = true
+
+[*.c]
+insert_final_newline = true
+indent_size = 4
+indent_style = tab
+
+[{CMakeLists.txt,*.cmake}]
+insert_final_newline = true
+indent_size = 4
+indent_style = space

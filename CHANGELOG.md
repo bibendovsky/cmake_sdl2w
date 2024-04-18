@@ -1,6 +1,9 @@
 # SDL2W changelog
 
 ## [1.0.6] - 2024-04-18
+### Added
+- File .editorconfig.
+
 ### Changed
 - Set CMake minimum version to v3.5.
 

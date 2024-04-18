@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 ]]
 
 cmake_minimum_required(VERSION 3.5.0 FATAL_ERROR)
-project(test_cmake_sdl2w VERSION 1.0.6 LANGUAGES C)
+project(test_cmake_sdl2w VERSION 1.0.7 LANGUAGES C)
 
 # Options.
 #

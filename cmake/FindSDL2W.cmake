@@ -20,7 +20,7 @@ Targets:
 
 cmake_minimum_required(VERSION 3.5.0 FATAL_ERROR)
 
-set(SDL2W_VERSION "1.0.5")
+set(SDL2W_VERSION "1.0.6")
 message(STATUS "[SDL2W] Version: ${SDL2W_VERSION}")
 
 set(SDL2W_TMP_TARGET "${CMAKE_FIND_PACKAGE_NAME}::${CMAKE_FIND_PACKAGE_NAME}")

@@ -6,7 +6,6 @@ Copyright (c) 2018-2024 Boris I. Bendovsky (bibendovsky@hotmail.com) and Contrib
 SPDX-License-Identifier: MIT
 ]]
 
-
 cmake_minimum_required(VERSION 3.5.0 FATAL_ERROR)
 project(test_cmake_sdl2w VERSION 1.0.6 LANGUAGES C)
 
@@ -28,7 +27,6 @@ if (TEST_CMAKE_SDL2W_USE_STATIC_LINKING)
     endif ()
 endif ()
 
-
 # Find packages.
 #
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
@@ -39,17 +37,15 @@ if (TEST_CMAKE_SDL2W_NET)
     find_package(SDL2W_net 2.0.0 REQUIRED COMPONENTS ${TEST_CMAKE_SDL2W_NET_COMPONENTS})
 endif ()
 
-
 # Target.
 #
-add_executable(${PROJECT_NAME} "")
-
+add_executable(test_cmake_sdl2w "")
 
 # Target properties.
 #
 if (WIN32)
     set_target_properties(
-        ${PROJECT_NAME}
+        test_cmake_sdl2w
         PROPERTIES
         WIN32_EXECUTABLE TRUE
     )
@@ -59,7 +55,7 @@ endif ()
 #
 if (TEST_CMAKE_SDL2W_NET)
     target_compile_definitions(
-        ${PROJECT_NAME}
+        test_cmake_sdl2w
         PRIVATE
             TEST_CMAKE_SDL2W_NET
     )
@@ -69,7 +65,7 @@ endif ()
 #
 if (MINGW)
     target_link_libraries(
-        ${PROJECT_NAME}
+        test_cmake_sdl2w
         PRIVATE
             -mconsole
     )
@@ -78,7 +74,7 @@ endif ()
 if (TEST_CMAKE_SDL2W_USE_STATIC_LINKING)
     if (NOT WIN32 OR MINGW)
         target_link_libraries(
-            ${PROJECT_NAME}
+            test_cmake_sdl2w
             PRIVATE
                 -static
         )
@@ -87,14 +83,14 @@ endif ()
 
 if (TEST_CMAKE_SDL2W_NET)
     target_link_libraries(
-        ${PROJECT_NAME}
+        test_cmake_sdl2w
         PRIVATE
             SDL2W_net::SDL2W_net
     )
 endif ()
 
 target_link_libraries(
-    ${PROJECT_NAME}
+    test_cmake_sdl2w
     PRIVATE
         SDL2W::SDL2Wmain
         SDL2W::SDL2W
@@ -104,7 +100,7 @@ target_link_libraries(
 #
 if (MSVC)
     set_target_properties(
-        ${PROJECT_NAME}
+        test_cmake_sdl2w
         PROPERTIES
         LINK_FLAGS "/SUBSYSTEM:CONSOLE"
     )
@@ -113,7 +109,7 @@ endif ()
 # Source files.
 #
 target_sources(
-    ${PROJECT_NAME}
+    test_cmake_sdl2w
     PRIVATE
         src/test_cmake_sdl2w.c
 )
@@ -122,7 +118,7 @@ target_sources(
 #
 install(
     TARGETS
-        ${PROJECT_NAME}
+        test_cmake_sdl2w
     RUNTIME
     DESTINATION "."
 )

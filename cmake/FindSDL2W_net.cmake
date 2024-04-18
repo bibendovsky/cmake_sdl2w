@@ -16,7 +16,6 @@ Targets:
     - SDL2W_net::SDL2W_net - SDL2_net.
 ]]
 
-
 cmake_minimum_required(VERSION 3.5.0 FATAL_ERROR)
 
 set(SDL2W_NET_VERSION "1.0.2")
@@ -65,10 +64,8 @@ if (SDL2W_SDL2_NET_DIR)
     message(STATUS "[SDL2W_net] Custom path: ${SDL2W_SDL2_NET_DIR}")
 endif ()
 
-
 set(SDL2W_NET_TMP_SDL2_INC_DIRS "")
 set(SDL2W_NET_TMP_SDL2_LINK_LIBS "")
-
 
 #
 # Check for Visual C++ / MinGW development libraries.
@@ -234,70 +231,50 @@ foreach (SDL2W_NET_TMP_INCLUDE_DIR IN LISTS SDL2W_NET_TMP_SDL2_INC_DIRS)
     # Extract version.
     #
     if (EXISTS ${SDL2W_NET_TMP_SDL_NET_H})
-        set(
-            SDL2W_NET_TMP_MAJOR_REGEX
-            "^#define[ \t]+SDL_NET_MAJOR_VERSION[ \t]+([0-9]+)$"
-        )
+        set(SDL2W_NET_TMP_MAJOR_REGEX "^#define[ \t]+SDL_NET_MAJOR_VERSION[ \t]+([0-9]+)$")
+        set(SDL2W_NET_TMP_MINOR_REGEX "^#define[ \t]+SDL_NET_MINOR_VERSION[ \t]+([0-9]+)$")
+        set(SDL2W_NET_TMP_PATCH_REGEX "^#define[ \t]+SDL_NET_PATCHLEVEL[ \t]+([0-9]+)$")
 
-        set(
-            SDL2W_NET_TMP_MINOR_REGEX
-            "^#define[ \t]+SDL_NET_MINOR_VERSION[ \t]+([0-9]+)$"
-        )
-
-        set(
-            SDL2W_NET_TMP_PATCH_REGEX
-            "^#define[ \t]+SDL_NET_PATCHLEVEL[ \t]+([0-9]+)$"
-        )
-
-        file(
-            STRINGS
+        file(STRINGS
             ${SDL2W_NET_TMP_SDL_NET_H}
             SDL2W_NET_TMP_MAJOR_VERSION_STRING
             REGEX ${SDL2W_NET_TMP_MAJOR_REGEX}
         )
 
-        file(
-            STRINGS
+        file(STRINGS
             ${SDL2W_NET_TMP_SDL_NET_H}
             SDL2W_NET_TMP_MINOR_VERSION_STRING
             REGEX ${SDL2W_NET_TMP_MINOR_REGEX}
         )
 
-        file(
-            STRINGS
+        file(STRINGS
             ${SDL2W_NET_TMP_SDL_NET_H}
             SDL2W_NET_TMP_PATCH_VERSION_STRING
             REGEX ${SDL2W_NET_TMP_PATCH_REGEX}
         )
 
-        string (
-            REGEX REPLACE
+        string(REGEX REPLACE
             ${SDL2W_NET_TMP_MAJOR_REGEX}
             "\\1"
             SDL2W_NET_TMP_MAJOR_VERSION
             ${SDL2W_NET_TMP_MAJOR_VERSION_STRING}
         )
 
-        string (
-            REGEX REPLACE
+        string(REGEX REPLACE
             ${SDL2W_NET_TMP_MINOR_REGEX}
             "\\1"
             SDL2W_NET_TMP_MINOR_VERSION
             ${SDL2W_NET_TMP_MINOR_VERSION_STRING}
         )
 
-        string (
-            REGEX REPLACE
+        string(REGEX REPLACE
             ${SDL2W_NET_TMP_PATCH_REGEX}
             "\\1"
             SDL2W_NET_TMP_PATCH_VERSION
             ${SDL2W_NET_TMP_PATCH_VERSION_STRING}
         )
 
-        set(
-            SDL2W_NET_TMP_DIGIT_REGEX
-            "^[0-9]+$"
-        )
+        set(SDL2W_NET_TMP_DIGIT_REGEX "^[0-9]+$")
 
         if (SDL2W_NET_TMP_MAJOR_VERSION MATCHES ${SDL2W_NET_TMP_DIGIT_REGEX} AND
             SDL2W_NET_TMP_MINOR_VERSION MATCHES ${SDL2W_NET_TMP_DIGIT_REGEX} AND
@@ -307,13 +284,12 @@ foreach (SDL2W_NET_TMP_INCLUDE_DIR IN LISTS SDL2W_NET_TMP_SDL2_INC_DIRS)
                 message(FATAL_ERROR "[SDL2W_net] Unsupported major version (got: ${SDL2W_NET_TMP_MAJOR_VERSION}; expected: 2).")
             endif ()
 
-            set(
-                SDL2W_NET_TMP_VERSION_STRING
+            set(SDL2W_NET_TMP_VERSION_STRING
                 ${SDL2W_NET_TMP_MAJOR_VERSION}.${SDL2W_NET_TMP_MINOR_VERSION}.${SDL2W_NET_TMP_PATCH_VERSION}
             )
         endif ()
 
-        break ()
+        break()
     endif ()
 endforeach ()
 
@@ -348,10 +324,8 @@ endif ()
 
 find_package_handle_standard_args(
     ${CMAKE_FIND_PACKAGE_NAME}
-    REQUIRED_VARS
-        ${SDL2W_NET_TMP_REQUIRED_VARS}
-    VERSION_VAR
-        SDL2W_NET_TMP_VERSION_STRING
+    REQUIRED_VARS ${SDL2W_NET_TMP_REQUIRED_VARS}
+    VERSION_VAR SDL2W_NET_TMP_VERSION_STRING
 )
 
 if (SDL2W_TMP_USE_STATIC)
@@ -372,15 +346,11 @@ if (NOT TARGET ${SDL2W_NET_TMP_TARGET})
 
     add_library(${SDL2W_NET_TMP_TARGET} INTERFACE IMPORTED)
 
-    set_target_properties(
-        ${SDL2W_NET_TMP_TARGET}
-        PROPERTIES
-            INTERFACE_INCLUDE_DIRECTORIES "${SDL2W_NET_TMP_SDL2_INC_DIRS}"
+    set_target_properties(${SDL2W_NET_TMP_TARGET} PROPERTIES
+        INTERFACE_INCLUDE_DIRECTORIES "${SDL2W_NET_TMP_SDL2_INC_DIRS}"
     )
 
-    set_target_properties(
-        ${SDL2W_NET_TMP_TARGET}
-        PROPERTIES
-            INTERFACE_LINK_LIBRARIES "${SDL2W_NET_TMP_SDL2_LINK_LIBS}"
+    set_target_properties(${SDL2W_NET_TMP_TARGET} PROPERTIES
+        INTERFACE_LINK_LIBRARIES "${SDL2W_NET_TMP_SDL2_LINK_LIBS}"
     )
 endif ()

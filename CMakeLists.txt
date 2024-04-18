@@ -44,53 +44,32 @@ add_executable(test_cmake_sdl2w "")
 # Target properties.
 #
 if (WIN32)
-    set_target_properties(
-        test_cmake_sdl2w
-        PROPERTIES
-        WIN32_EXECUTABLE TRUE
-    )
+    set_target_properties(test_cmake_sdl2w PROPERTIES WIN32_EXECUTABLE TRUE)
 endif ()
 
 # Compile definitions.
 #
 if (TEST_CMAKE_SDL2W_NET)
-    target_compile_definitions(
-        test_cmake_sdl2w
-        PRIVATE
-            TEST_CMAKE_SDL2W_NET
-    )
+    target_compile_definitions(test_cmake_sdl2w PRIVATE TEST_CMAKE_SDL2W_NET)
 endif ()
 
 # Dependencies.
 #
 if (MINGW)
-    target_link_libraries(
-        test_cmake_sdl2w
-        PRIVATE
-            -mconsole
-    )
+    target_link_libraries(test_cmake_sdl2w PRIVATE -mconsole)
 endif ()
 
 if (TEST_CMAKE_SDL2W_USE_STATIC_LINKING)
     if (NOT WIN32 OR MINGW)
-        target_link_libraries(
-            test_cmake_sdl2w
-            PRIVATE
-                -static
-        )
+        target_link_libraries(test_cmake_sdl2w PRIVATE -static)
     endif ()
 endif ()
 
 if (TEST_CMAKE_SDL2W_NET)
-    target_link_libraries(
-        test_cmake_sdl2w
-        PRIVATE
-            SDL2W_net::SDL2W_net
-    )
+    target_link_libraries(test_cmake_sdl2w PRIVATE SDL2W_net::SDL2W_net)
 endif ()
 
-target_link_libraries(
-    test_cmake_sdl2w
+target_link_libraries(test_cmake_sdl2w
     PRIVATE
         SDL2W::SDL2Wmain
         SDL2W::SDL2W
@@ -99,26 +78,15 @@ target_link_libraries(
 # Linking options.
 #
 if (MSVC)
-    set_target_properties(
-        test_cmake_sdl2w
-        PROPERTIES
+    set_target_properties(test_cmake_sdl2w PROPERTIES
         LINK_FLAGS "/SUBSYSTEM:CONSOLE"
     )
 endif ()
 
 # Source files.
 #
-target_sources(
-    test_cmake_sdl2w
-    PRIVATE
-        src/test_cmake_sdl2w.c
-)
+target_sources(test_cmake_sdl2w PRIVATE src/test_cmake_sdl2w.c)
 
 # Install.
 #
-install(
-    TARGETS
-        test_cmake_sdl2w
-    RUNTIME
-    DESTINATION "."
-)
+install(TARGETS test_cmake_sdl2w RUNTIME DESTINATION ".")

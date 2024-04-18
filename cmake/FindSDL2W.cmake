@@ -18,7 +18,6 @@ Targets:
     - SDL2W::SDL2W - SDL2 or SDL2-static.
 ]]
 
-
 cmake_minimum_required(VERSION 3.5.0 FATAL_ERROR)
 
 set(SDL2W_VERSION "1.0.5")
@@ -156,33 +155,18 @@ if (SDL2W_TMP_FOUND_TARGETS)
     # SDL2
     #
     if (SDL2W_TMP_USE_STATIC AND SDL2W_TMP_FOUND_STATIC_TARGET)
-        get_target_property(
-            SDL2W_TMP_LOCATION
-            SDL2::SDL2-static
-            LOCATION
-        )
+        get_target_property(SDL2W_TMP_LOCATION SDL2::SDL2-static LOCATION)
     else ()
-        get_target_property(
-            SDL2W_TMP_LOCATION
-            SDL2::SDL2
-            LOCATION
-        )
+        get_target_property(SDL2W_TMP_LOCATION SDL2::SDL2 LOCATION)
     endif ()
 
     list(APPEND SDL2W_TMP_SDL2_LINK_LIBS ${SDL2W_TMP_LOCATION})
-
     message(STATUS "[SDL2W]     \"${SDL2W_TMP_LOCATION}\"")
 
     # SDL2main
     #
-    get_target_property(
-        SDL2W_TMP_LOCATION
-        SDL2::SDL2main
-        LOCATION
-    )
-
+    get_target_property(SDL2W_TMP_LOCATION SDL2::SDL2main LOCATION)
     list(APPEND SDL2W_TMP_SDL2MAIN_LINK_LIBS ${SDL2W_TMP_LOCATION})
-
     message(STATUS "[SDL2W]     \"${SDL2W_TMP_LOCATION}\"")
 elseif (SDL2W_TMP_FOUND_CONFIG)
     set(SDL2W_TMP_SDL2_STATIC_LIB_LOCATION "")
@@ -238,17 +222,9 @@ endif ()
 #
 if (SDL2W_TMP_FOUND_TARGETS)
     if (SDL2W_TMP_USE_STATIC AND SDL2W_TMP_FOUND_STATIC_TARGET)
-        get_target_property(
-            SDL2W_TMP_SDL2_INC_DIRS
-            SDL2::SDL2-static
-            INTERFACE_INCLUDE_DIRECTORIES
-        )
+        get_target_property(SDL2W_TMP_SDL2_INC_DIRS SDL2::SDL2-static INTERFACE_INCLUDE_DIRECTORIES)
     else ()
-        get_target_property(
-            SDL2W_TMP_SDL2_INC_DIRS
-            SDL2::SDL2
-            INTERFACE_INCLUDE_DIRECTORIES
-        )
+        get_target_property(SDL2W_TMP_SDL2_INC_DIRS SDL2::SDL2 INTERFACE_INCLUDE_DIRECTORIES)
     endif ()
 elseif (SDL2W_TMP_FOUND_CONFIG)
     set(SDL2W_TMP_SDL2_INC_DIRS ${SDL2_INCLUDE_DIRS})
@@ -297,70 +273,50 @@ foreach (SDL2W_TMP_INCLUDE_DIR IN LISTS SDL2W_TMP_SDL2_INC_DIRS)
     # Extract version.
     #
     if (EXISTS ${SDL2W_TMP_SDL_VERSION_H})
-        set(
-            SDL2W_TMP_MAJOR_REGEX
-            "^#define[ \t]+SDL_MAJOR_VERSION[ \t]+([0-9]+)$"
-        )
+        set(SDL2W_TMP_MAJOR_REGEX "^#define[ \t]+SDL_MAJOR_VERSION[ \t]+([0-9]+)$")
+        set(SDL2W_TMP_MINOR_REGEX "^#define[ \t]+SDL_MINOR_VERSION[ \t]+([0-9]+)$")
+        set(SDL2W_TMP_PATCH_REGEX"^#define[ \t]+SDL_PATCHLEVEL[ \t]+([0-9]+)$")
 
-        set(
-            SDL2W_TMP_MINOR_REGEX
-            "^#define[ \t]+SDL_MINOR_VERSION[ \t]+([0-9]+)$"
-        )
-
-        set(
-            SDL2W_TMP_PATCH_REGEX
-            "^#define[ \t]+SDL_PATCHLEVEL[ \t]+([0-9]+)$"
-        )
-
-        file(
-            STRINGS
+        file(STRINGS
             ${SDL2W_TMP_SDL_VERSION_H}
             SDL2W_TMP_MAJOR_VERSION_STRING
             REGEX ${SDL2W_TMP_MAJOR_REGEX}
         )
 
-        file(
-            STRINGS
+        file(STRINGS
             ${SDL2W_TMP_SDL_VERSION_H}
             SDL2W_TMP_MINOR_VERSION_STRING
             REGEX ${SDL2W_TMP_MINOR_REGEX}
         )
 
-        file(
-            STRINGS
+        file(STRINGS
             ${SDL2W_TMP_SDL_VERSION_H}
             SDL2W_TMP_PATCH_VERSION_STRING
             REGEX ${SDL2W_TMP_PATCH_REGEX}
         )
 
-        string(
-            REGEX REPLACE
+        string(REGEX REPLACE
             ${SDL2W_TMP_MAJOR_REGEX}
             "\\1"
             SDL2W_TMP_MAJOR_VERSION
             ${SDL2W_TMP_MAJOR_VERSION_STRING}
         )
 
-        string(
-            REGEX REPLACE
+        string(REGEX REPLACE
             ${SDL2W_TMP_MINOR_REGEX}
             "\\1"
             SDL2W_TMP_MINOR_VERSION
             ${SDL2W_TMP_MINOR_VERSION_STRING}
         )
 
-        string(
-            REGEX REPLACE
+        string(REGEX REPLACE
             ${SDL2W_TMP_PATCH_REGEX}
             "\\1"
             SDL2W_TMP_PATCH_VERSION
             ${SDL2W_TMP_PATCH_VERSION_STRING}
         )
 
-        set(
-            SDL2W_TMP_DIGIT_REGEX
-            "^[0-9]+$"
-        )
+        set(SDL2W_TMP_DIGIT_REGEX "^[0-9]+$")
 
         if (SDL2W_TMP_MAJOR_VERSION MATCHES ${SDL2W_TMP_DIGIT_REGEX} AND
             SDL2W_TMP_MINOR_VERSION MATCHES ${SDL2W_TMP_DIGIT_REGEX} AND
@@ -370,13 +326,12 @@ foreach (SDL2W_TMP_INCLUDE_DIR IN LISTS SDL2W_TMP_SDL2_INC_DIRS)
                 message(FATAL_ERROR "[SDL2W] Unsupported major version (got: ${SDL2W_TMP_MAJOR_VERSION}; expected: 2).")
             endif ()
 
-            set(
-                SDL2W_TMP_VERSION_STRING
+            set(SDL2W_TMP_VERSION_STRING
                 ${SDL2W_TMP_MAJOR_VERSION}.${SDL2W_TMP_MINOR_VERSION}.${SDL2W_TMP_PATCH_VERSION}
             )
         endif ()
 
-        break ()
+        break()
     endif ()
 endforeach ()
 
@@ -413,10 +368,8 @@ endif ()
 
 find_package_handle_standard_args(
     ${CMAKE_FIND_PACKAGE_NAME}
-    REQUIRED_VARS
-        ${SDL2W_TMP_REQUIRED_VARS}
-    VERSION_VAR
-        SDL2W_TMP_VERSION_STRING
+    REQUIRED_VARS ${SDL2W_TMP_REQUIRED_VARS}
+    VERSION_VAR SDL2W_TMP_VERSION_STRING
 )
 
 # Add additional system libraries for static linking.
@@ -437,16 +390,12 @@ endif ()
 if (NOT TARGET ${SDL2W_TMP_TARGET})
     add_library(${SDL2W_TMP_TARGET} INTERFACE IMPORTED)
 
-    set_target_properties(
-        ${SDL2W_TMP_TARGET}
-        PROPERTIES
-            INTERFACE_INCLUDE_DIRECTORIES "${SDL2W_TMP_SDL2_INC_DIRS}"
+    set_target_properties(${SDL2W_TMP_TARGET} PROPERTIES
+        INTERFACE_INCLUDE_DIRECTORIES "${SDL2W_TMP_SDL2_INC_DIRS}"
     )
 
-    set_target_properties(
-        ${SDL2W_TMP_TARGET}
-        PROPERTIES
-            INTERFACE_LINK_LIBRARIES "${SDL2W_TMP_SDL2_LINK_LIBS}"
+    set_target_properties(${SDL2W_TMP_TARGET} PROPERTIES
+        INTERFACE_LINK_LIBRARIES "${SDL2W_TMP_SDL2_LINK_LIBS}"
     )
 endif ()
 
@@ -455,17 +404,13 @@ endif ()
 if (NOT TARGET ${SDL2W_TMP_TARGET_MAIN})
     add_library(${SDL2W_TMP_TARGET_MAIN} INTERFACE IMPORTED)
 
-    set_target_properties(
-        ${SDL2W_TMP_TARGET_MAIN}
-        PROPERTIES
-            INTERFACE_INCLUDE_DIRECTORIES "${SDL2W_TMP_SDL2_INC_DIRS}"
+    set_target_properties(${SDL2W_TMP_TARGET_MAIN} PROPERTIES
+        INTERFACE_INCLUDE_DIRECTORIES "${SDL2W_TMP_SDL2_INC_DIRS}"
     )
 
     if (SDL2W_TMP_SDL2MAIN_LINK_LIBS)
-        set_target_properties(
-            ${SDL2W_TMP_TARGET_MAIN}
-            PROPERTIES
-                INTERFACE_LINK_LIBRARIES "${SDL2W_TMP_SDL2MAIN_LINK_LIBS}"
+        set_target_properties(${SDL2W_TMP_TARGET_MAIN} PROPERTIES
+            INTERFACE_LINK_LIBRARIES "${SDL2W_TMP_SDL2MAIN_LINK_LIBS}"
         )
     endif ()
 endif ()

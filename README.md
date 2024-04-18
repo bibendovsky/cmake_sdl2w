@@ -14,7 +14,7 @@
 ## License
 SDL2W - CMake wrapper for SDL2.
 
-Copyright (c) 2018-2021 Boris I. Bendovsky (bibendovsky@hotmail.com) and Contributors.
+Copyright (c) 2018-2024 Boris I. Bendovsky (bibendovsky@hotmail.com) and Contributors.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

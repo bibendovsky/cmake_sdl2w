@@ -1,7 +1,7 @@
 #[[
 SDL2W - CMake wrapper for SDL2.
 
-Copyright (c) 2020-2022 Boris I. Bendovsky (bibendovsky@hotmail.com) and Contributors.
+Copyright (c) 2020-2024 Boris I. Bendovsky (bibendovsky@hotmail.com) and Contributors.
 SPDX-License-Identifier: MIT
 
 Virtual components:
@@ -17,7 +17,7 @@ Targets:
 ]]
 
 
-cmake_minimum_required(VERSION 3.1.3 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5.0 FATAL_ERROR)
 
 set(SDL2W_NET_VERSION "1.0.2")
 message(STATUS "[SDL2W_net] Version: ${SDL2W_NET_VERSION}")

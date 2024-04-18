@@ -2,12 +2,12 @@
 SDL2W - CMake wrapper for SDL2.
 Test program.
 
-Copyright (c) 2018-2022 Boris I. Bendovsky (bibendovsky@hotmail.com) and Contributors.
+Copyright (c) 2018-2024 Boris I. Bendovsky (bibendovsky@hotmail.com) and Contributors.
 SPDX-License-Identifier: MIT
 ]]
 
 
-cmake_minimum_required(VERSION 3.1.3 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5.0 FATAL_ERROR)
 project(test_cmake_sdl2w VERSION 1.0.6 LANGUAGES C)
 
 # Options.

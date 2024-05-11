@@ -1,5 +1,9 @@
 # SDL2W changelog
 
+## [1.0.7] - 2024-05-11
+### Changed
+- Small formatting.
+
 ## [1.0.6] - 2024-04-18
 ### Added
 - File .editorconfig.

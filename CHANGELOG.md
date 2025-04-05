@@ -1,5 +1,14 @@
 # SDL2W changelog
 
+## [1.0.8] - 2025-04-05
+### Added
+- [SDL2_net] Support package with CMake targets.
+
+### Changed
+- [SDL2] Always link dependencies for Windows.
+- Copyright years.
+
+
 ## [1.0.7] - 2024-05-11
 ### Changed
 - Small formatting.
